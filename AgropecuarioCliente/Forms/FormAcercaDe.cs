@@ -19,5 +19,10 @@ namespace AgropecuarioCliente.Forms
         {
 
         }
+
+        private void lblIntegrantes_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

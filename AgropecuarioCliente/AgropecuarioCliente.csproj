@@ -49,6 +49,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FormSelectorProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSelectorProducto.Designer.cs">
+      <DependentUpon>FormSelectorProducto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormActualizarProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormActualizarProducto.Designer.cs">
+      <DependentUpon>FormActualizarProducto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormEliminarProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEliminarProducto.Designer.cs">
+      <DependentUpon>FormEliminarProducto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormEstadisticas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEstadisticas.Designer.cs">
+      <DependentUpon>FormEstadisticas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormBuscarProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormBuscarProducto.Designer.cs">
+      <DependentUpon>FormBuscarProducto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormCrearProducto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +112,12 @@
     <EmbeddedResource Include="Forms\FormAcercaDe.resx">
       <DependentUpon>FormAcercaDe.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormBuscarProducto.resx">
+      <DependentUpon>FormBuscarProducto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCrearProducto.resx">
+      <DependentUpon>FormCrearProducto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormListarProductos.resx">
       <DependentUpon>FormListarProductos.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,6 +147,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include=".gitignore" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

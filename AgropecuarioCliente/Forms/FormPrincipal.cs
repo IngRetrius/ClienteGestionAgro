@@ -11,7 +11,16 @@ namespace AgropecuarioCliente.Forms
             InitializeComponent();
         }
 
-        // Eventos de botones principales
+        private void FormPrincipal_Load(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.CenterToScreen();
+        }
+
+        // =========================
+        // EVENTOS DE BOTONES PRINCIPALES
+        // =========================
+
         private void btnListar_Click(object sender, EventArgs e)
         {
             AbrirFormListar();
@@ -29,10 +38,31 @@ namespace AgropecuarioCliente.Forms
 
         private void btnEstadisticas_Click(object sender, EventArgs e)
         {
-            MessageHelper.ShowWarning("Funcionalidad de estadísticas en desarrollo.");
+            AbrirFormEstadisticas();
         }
 
-        // Eventos del menú
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            AbrirFormEditar();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            AbrirFormEliminar();
+        }
+
+        // =========================
+        // EVENTOS DEL MENÚ
+        // =========================
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageHelper.ShowConfirmation("¿Está seguro que desea salir de la aplicación?"))
+            {
+                Application.Exit();
+            }
+        }
+
         private void listarProductosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirFormListar();
@@ -43,6 +73,16 @@ namespace AgropecuarioCliente.Forms
             AbrirFormCrear();
         }
 
+        private void editarProductoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormEditar();
+        }
+
+        private void eliminarProductoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormEliminar();
+        }
+
         private void buscarProductoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirFormBuscar();
@@ -50,7 +90,7 @@ namespace AgropecuarioCliente.Forms
 
         private void estadísticasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageHelper.ShowWarning("Funcionalidad de estadísticas en desarrollo.");
+            AbrirFormEstadisticas();
         }
 
         private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,15 +98,10 @@ namespace AgropecuarioCliente.Forms
             AbrirFormAcercaDe();
         }
 
-        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (MessageHelper.ShowConfirmation("¿Está seguro que desea salir de la aplicación?"))
-            {
-                Application.Exit();
-            }
-        }
+        // =========================
+        // MÉTODOS PARA ABRIR FORMULARIOS
+        // =========================
 
-        // Métodos para abrir formularios
         private void AbrirFormListar()
         {
             try
@@ -76,7 +111,7 @@ namespace AgropecuarioCliente.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError($"Error al abrir el formulario: {ex.Message}");
+                MessageHelper.ShowError($"Error al abrir el formulario de listado:\n{ex.Message}");
             }
         }
 
@@ -84,11 +119,42 @@ namespace AgropecuarioCliente.Forms
         {
             try
             {
-                MessageHelper.ShowWarning("Formulario de crear en desarrollo.");
+                var formCrear = new FormCrearProducto();
+                if (formCrear.ShowDialog() == DialogResult.OK)
+                {
+                    MessageHelper.ShowSuccess("Producto creado exitosamente.");
+                }
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError($"Error al abrir el formulario: {ex.Message}");
+                MessageHelper.ShowError($"Error al abrir el formulario de creación:\n{ex.Message}");
+            }
+        }
+
+        private void AbrirFormEditar()
+        {
+            try
+            {
+                // CAMBIO AQUÍ: usar FormActualizarProducto en lugar de FormEditarProducto
+                var formEditar = new FormActualizarProducto();
+                formEditar.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de edición:\n{ex.Message}");
+            }
+        }
+
+        private void AbrirFormEliminar()
+        {
+            try
+            {
+                var formEliminar = new FormEliminarProducto();
+                formEliminar.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de eliminación:\n{ex.Message}");
             }
         }
 
@@ -96,11 +162,25 @@ namespace AgropecuarioCliente.Forms
         {
             try
             {
-                MessageHelper.ShowWarning("Formulario de buscar en desarrollo.");
+                var formBuscar = new FormBuscarProducto();
+                formBuscar.ShowDialog();
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError($"Error al abrir el formulario: {ex.Message}");
+                MessageHelper.ShowError($"Error al abrir el formulario de búsqueda:\n{ex.Message}");
+            }
+        }
+
+        private void AbrirFormEstadisticas()
+        {
+            try
+            {
+                var formEstadisticas = new FormEstadisticas();
+                formEstadisticas.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir las estadísticas:\n{ex.Message}");
             }
         }
 
@@ -113,7 +193,74 @@ namespace AgropecuarioCliente.Forms
             }
             catch (Exception ex)
             {
-                MessageHelper.ShowError($"Error al abrir el formulario: {ex.Message}");
+                MessageHelper.ShowError($"Error al abrir la información:\n{ex.Message}");
+            }
+        }
+
+        // =========================
+        // EVENTOS ADICIONALES
+        // =========================
+
+        private void FormPrincipal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                if (!MessageHelper.ShowConfirmation("¿Está seguro que desea cerrar la aplicación?"))
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private async void VerificarConexionAPI()
+        {
+            try
+            {
+                var apiService = new AgropecuarioCliente.Services.ApiService();
+                await apiService.ObtenerTodosAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowWarning($"No se pudo conectar con el servidor de la API.\n" +
+                                        $"Verifique que el servidor esté ejecutándose en http://localhost:8081\n\n" +
+                                        $"Error: {ex.Message}");
+            }
+        }
+
+        private async void FormPrincipal_Shown(object sender, EventArgs e)
+        {
+            await System.Threading.Tasks.Task.Delay(1000);
+            VerificarConexionAPI();
+        }
+
+        private void FormPrincipal_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.L:
+                        AbrirFormListar();
+                        break;
+                    case Keys.N:
+                        AbrirFormCrear();
+                        break;
+                    case Keys.E:
+                        AbrirFormEditar();
+                        break;
+                    case Keys.D:
+                        AbrirFormEliminar();
+                        break;
+                    case Keys.F:
+                        AbrirFormBuscar();
+                        break;
+                    case Keys.S:
+                        AbrirFormEstadisticas();
+                        break;
+                    case Keys.Q:
+                        this.Close();
+                        break;
+                }
             }
         }
     }

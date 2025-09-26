@@ -13,3 +13,6 @@ C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\bin\Debug
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\Agropecu.EF1852C3.Up2Date
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.exe
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.pdb
+C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.exe.config
+C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.Forms.FormBuscarProducto.resources
+C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.Forms.FormCrearProducto.resources

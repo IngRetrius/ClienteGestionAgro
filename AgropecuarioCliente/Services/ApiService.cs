@@ -5,27 +5,42 @@ using System.Text;
 using System.Threading.Tasks;
 using AgropecuarioCliente.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace AgropecuarioCliente.Services
 {
     public class ApiService
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "http://localhost:8081/api/productos";
+        private readonly string _baseUrl;
+        private readonly JsonSerializerSettings _jsonSettings;
 
         public ApiService()
         {
             _httpClient = new HttpClient();
+            _baseUrl = "http://localhost:8081/api/productos";
             _httpClient.Timeout = TimeSpan.FromSeconds(30);
+
+            // IMPORTANTE: Configurar serialización JSON para que coincida con Java
+            _jsonSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Include,
+                DateFormatString = "yyyy-MM-ddTHH:mm:ss"
+            };
         }
 
         public async Task<List<ProductoAgricola>> ObtenerTodosAsync()
         {
             try
             {
-                string response = await _httpClient.GetStringAsync(BaseUrl);
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(response);
-                return apiResponse.Data ?? new List<ProductoAgricola>();
+                var response = await _httpClient.GetAsync(_baseUrl);
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<ProductoAgricola>();
             }
             catch (Exception ex)
             {
@@ -37,13 +52,21 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                string response = await _httpClient.GetStringAsync($"{BaseUrl}/{id}");
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(response);
-                return apiResponse.Data;
+                var response = await _httpClient.GetAsync($"{_baseUrl}/{id}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al obtener producto: {ex.Message}");
+                throw new Exception($"Error al obtener producto por ID: {ex.Message}");
             }
         }
 
@@ -51,14 +74,34 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                string json = JsonConvert.SerializeObject(producto);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                // IMPORTANTE: Generar ID si no existe
+                if (string.IsNullOrEmpty(producto.Id))
+                {
+                    var random = new Random();
+                    producto.Id = $"PRD{random.Next(10000, 99999)}";
+                    producto.Id = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+                }
 
-                HttpResponseMessage response = await _httpClient.PostAsync(BaseUrl, content);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                // Serializar con configuración específica
+                var jsonContent = JsonConvert.SerializeObject(producto, _jsonSettings);
 
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(responseBody);
-                return apiResponse.Data;
+                // DEBUG: Imprimir JSON para verificar
+                System.Diagnostics.Debug.WriteLine($"JSON enviado: {jsonContent}");
+
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync(_baseUrl, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error del servidor: {response.StatusCode} - {errorContent}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(responseContent, _jsonSettings);
+
+                return apiResponse?.Data;
             }
             catch (Exception ex)
             {
@@ -70,14 +113,28 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                string json = JsonConvert.SerializeObject(producto);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                // Asegurar que el ID esté presente
+                producto.Id = id;
 
-                HttpResponseMessage response = await _httpClient.PutAsync($"{BaseUrl}/{id}", content);
-                string responseBody = await response.Content.ReadAsStringAsync();
+                var jsonContent = JsonConvert.SerializeObject(producto, _jsonSettings);
 
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(responseBody);
-                return apiResponse.Data;
+                // DEBUG: Imprimir JSON para verificar
+                System.Diagnostics.Debug.WriteLine($"JSON enviado para actualizar: {jsonContent}");
+
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"{_baseUrl}/{id}", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error del servidor: {response.StatusCode} - {errorContent}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<ProductoAgricola>>(responseContent, _jsonSettings);
+
+                return apiResponse?.Data;
             }
             catch (Exception ex)
             {
@@ -89,7 +146,7 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                HttpResponseMessage response = await _httpClient.DeleteAsync($"{BaseUrl}/{id}");
+                var response = await _httpClient.DeleteAsync($"{_baseUrl}/{id}");
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
@@ -98,18 +155,72 @@ namespace AgropecuarioCliente.Services
             }
         }
 
+        // Métodos de búsqueda
+        public async Task<List<ProductoAgricola>> BuscarPorNombreAsync(string nombre)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_baseUrl}?nombre={Uri.EscapeDataString(nombre)}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<ProductoAgricola>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al buscar por nombre: {ex.Message}");
+            }
+        }
+
         public async Task<List<ProductoAgricola>> BuscarPorTipoAsync(string tipo)
         {
             try
             {
-                string response = await _httpClient.GetStringAsync($"{BaseUrl}?tipo={tipo}");
-                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(response);
-                return apiResponse.Data ?? new List<ProductoAgricola>();
+                var response = await _httpClient.GetAsync($"{_baseUrl}?tipo={Uri.EscapeDataString(tipo)}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<ProductoAgricola>();
             }
             catch (Exception ex)
             {
                 throw new Exception($"Error al buscar por tipo: {ex.Message}");
             }
         }
+
+        public async Task<List<ProductoAgricola>> BuscarPorRangoHectareasAsync(double min, double max)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_baseUrl}?hectareasMin={min}&hectareasMax={max}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<ProductoAgricola>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al buscar por rango de hectáreas: {ex.Message}");
+            }
+        }
+
+        public void Dispose()
+        {
+            _httpClient?.Dispose();
+        }
+    }
+
+    public class ApiResponse<T>
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public T Data { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
