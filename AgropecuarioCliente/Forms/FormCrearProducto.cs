@@ -77,7 +77,8 @@ namespace AgropecuarioCliente.Forms
 
                 var producto = new ProductoAgricola
                 {
-                    Id = GenerarId(),
+                    // NO asignar ID aquí - dejar que el servidor lo genere
+                    Id = null,
                     Nombre = txtNombre.Text.Trim(),
                     TipoCultivo = cmbTipoCultivo.SelectedItem?.ToString(),
                     HectareasCultivadas = (double)numHectareas.Value,
@@ -86,7 +87,7 @@ namespace AgropecuarioCliente.Forms
                     CostoProduccion = (double)numCosto.Value,
                     Temporada = cmbTemporada.SelectedItem?.ToString(),
                     TipoSuelo = cmbTipoSuelo.SelectedItem?.ToString(),
-                    CodigoFinca = txtCodigoFinca.Text.Trim(),
+                    CodigoFinca = string.IsNullOrWhiteSpace(txtCodigoFinca.Text) ? "F001" : txtCodigoFinca.Text.Trim(),
                     FechaProduccion = DateTime.Now
                 };
 
@@ -124,6 +125,13 @@ namespace AgropecuarioCliente.Forms
                 return false;
             }
 
+            if (txtNombre.Text.Trim().Length < 2)
+            {
+                MessageHelper.ShowWarning("El nombre debe tener al menos 2 caracteres.");
+                txtNombre.Focus();
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(txtCodigoFinca.Text))
             {
                 MessageHelper.ShowWarning("El código de finca es obligatorio.");
@@ -138,7 +146,7 @@ namespace AgropecuarioCliente.Forms
                 return false;
             }
 
-            if (numPrecio.Value <= numCosto.Value / 100) // Verificar que el precio sea mayor al costo por hectárea
+            if (numPrecio.Value <= numCosto.Value / 100)
             {
                 MessageHelper.ShowWarning("El precio de venta debe ser mayor al costo de producción por unidad.");
                 numPrecio.Focus();
@@ -146,13 +154,6 @@ namespace AgropecuarioCliente.Forms
             }
 
             return true;
-        }
-
-        private string GenerarId()
-        {
-            // Generar ID basado en timestamp para evitar duplicados
-            var timestamp = DateTime.Now.ToString("HHmmssfff");
-            return $"AGR{timestamp}";
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)

@@ -52,7 +52,7 @@
             // 
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblVersion.Location = new System.Drawing.Point(150, 98);
+            this.lblVersion.Location = new System.Drawing.Point(175, 114);
             this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(92, 17);
@@ -63,7 +63,7 @@
             // 
             this.lblIntegrantes.AutoSize = true;
             this.lblIntegrantes.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.lblIntegrantes.Location = new System.Drawing.Point(112, 130);
+            this.lblIntegrantes.Location = new System.Drawing.Point(122, 167);
             this.lblIntegrantes.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblIntegrantes.Name = "lblIntegrantes";
             this.lblIntegrantes.Size = new System.Drawing.Size(197, 20);
@@ -74,13 +74,12 @@
             // lblNombres
             // 
             this.lblNombres.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblNombres.Location = new System.Drawing.Point(40, 161);
+            this.lblNombres.Location = new System.Drawing.Point(113, 205);
             this.lblNombres.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNombres.Name = "lblNombres";
-            this.lblNombres.Size = new System.Drawing.Size(269, 83);
+            this.lblNombres.Size = new System.Drawing.Size(206, 30);
             this.lblNombres.TabIndex = 4;
-            this.lblNombres.Text = "• [Nombre del estudiante 1]\r\n• [Nombre del estudiante 2]\r\n• [Nombre del estudiant" +
-    "e 3]\r\n• [Nombre del estudiante 4]";
+            this.lblNombres.Text = "• [Juan Camilo Perea Possos]";
             this.lblNombres.Click += new System.EventHandler(this.lblNombres_Click);
             // 
             // lblCurso
@@ -99,8 +98,8 @@
             // 
             this.btnCerrar.BackColor = System.Drawing.Color.LightGray;
             this.btnCerrar.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnCerrar.Location = new System.Drawing.Point(192, 301);
-            this.btnCerrar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCerrar.Location = new System.Drawing.Point(192, 317);
+            this.btnCerrar.Margin = new System.Windows.Forms.Padding(2);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(75, 28);
             this.btnCerrar.TabIndex = 6;
@@ -122,7 +121,7 @@
             this.Controls.Add(this.lblUniversidad);
             this.Controls.Add(this.lblTitulo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormAcercaDe";

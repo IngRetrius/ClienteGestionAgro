@@ -21,7 +21,6 @@ namespace AgropecuarioCliente.Services
             _baseUrl = "http://localhost:8081/api/productos";
             _httpClient.Timeout = TimeSpan.FromSeconds(30);
 
-            // IMPORTANTE: Configurar serialización JSON para que coincida con Java
             _jsonSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -74,18 +73,10 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                // IMPORTANTE: Generar ID si no existe
-                if (string.IsNullOrEmpty(producto.Id))
-                {
-                    var random = new Random();
-                    producto.Id = $"PRD{random.Next(10000, 99999)}";
-                    producto.Id = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
-                }
+                // NO generar ID en el cliente - dejar que el servidor lo haga
+                // El servidor tiene la lógica para generar IDs válidos
 
-                // Serializar con configuración específica
                 var jsonContent = JsonConvert.SerializeObject(producto, _jsonSettings);
-
-                // DEBUG: Imprimir JSON para verificar
                 System.Diagnostics.Debug.WriteLine($"JSON enviado: {jsonContent}");
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -113,12 +104,9 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                // Asegurar que el ID esté presente
                 producto.Id = id;
 
                 var jsonContent = JsonConvert.SerializeObject(producto, _jsonSettings);
-
-                // DEBUG: Imprimir JSON para verificar
                 System.Diagnostics.Debug.WriteLine($"JSON enviado para actualizar: {jsonContent}");
 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -155,7 +143,6 @@ namespace AgropecuarioCliente.Services
             }
         }
 
-        // Métodos de búsqueda
         public async Task<List<ProductoAgricola>> BuscarPorNombreAsync(string nombre)
         {
             try
