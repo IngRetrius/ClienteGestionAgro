@@ -73,9 +73,6 @@ namespace AgropecuarioCliente.Services
         {
             try
             {
-                // NO generar ID en el cliente - dejar que el servidor lo haga
-                // El servidor tiene la lógica para generar IDs válidos
-
                 var jsonContent = JsonConvert.SerializeObject(producto, _jsonSettings);
                 System.Diagnostics.Debug.WriteLine($"JSON enviado: {jsonContent}");
 
@@ -176,6 +173,24 @@ namespace AgropecuarioCliente.Services
             catch (Exception ex)
             {
                 throw new Exception($"Error al buscar por tipo: {ex.Message}");
+            }
+        }
+
+        public async Task<List<ProductoAgricola>> BuscarPorTemporadaAsync(string temporada)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_baseUrl}?temporada={Uri.EscapeDataString(temporada)}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<ProductoAgricola>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<ProductoAgricola>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al buscar por temporada: {ex.Message}");
             }
         }
 

@@ -11,14 +11,12 @@ namespace AgropecuarioCliente.Forms
     public partial class FormListarProductos : Form
     {
         private readonly ApiService _apiService;
-        private List<ProductoAgricola> _todosLosProductos;
         private List<ProductoAgricola> _productosFiltrados;
 
         public FormListarProductos()
         {
             InitializeComponent();
             _apiService = new ApiService();
-            _todosLosProductos = new List<ProductoAgricola>();
             _productosFiltrados = new List<ProductoAgricola>();
         }
 
@@ -121,8 +119,8 @@ namespace AgropecuarioCliente.Forms
             {
                 this.Cursor = Cursors.WaitCursor;
 
-                _todosLosProductos = await _apiService.ObtenerTodosAsync();
-                _productosFiltrados = new List<ProductoAgricola>(_todosLosProductos);
+                // Carga inicial sin filtros - trae todos los productos
+                _productosFiltrados = await _apiService.ObtenerTodosAsync();
 
                 ActualizarDataGridView();
                 ActualizarContadorRegistros();
@@ -149,57 +147,135 @@ namespace AgropecuarioCliente.Forms
             lblTotalRegistros.Text = $"Total de registros: {_productosFiltrados.Count}";
         }
 
-        private void AplicarFiltros()
+        private async System.Threading.Tasks.Task AplicarFiltros()
         {
-            _productosFiltrados = new List<ProductoAgricola>(_todosLosProductos);
-
-            // Filtrar por tipo de cultivo
-            if (cmbTipoCultivo.SelectedIndex > 0)
+            try
             {
-                string tipoSeleccionado = cmbTipoCultivo.SelectedItem.ToString().ToLower();
-                _productosFiltrados = _productosFiltrados
-                    .Where(p => p.TipoCultivo.ToLower().Contains(tipoSeleccionado))
-                    .ToList();
-            }
+                this.Cursor = Cursors.WaitCursor;
+                btnFiltrar.Enabled = false;
 
-            // Filtrar por nombre
-            if (!string.IsNullOrWhiteSpace(txtNombre.Text))
+                bool tieneFiltroDeTipo = cmbTipoCultivo.SelectedIndex > 0;
+                bool tieneFiltroDeNombre = !string.IsNullOrWhiteSpace(txtNombre.Text);
+                bool tieneFiltroDeTemporada = cmbTemporada.SelectedIndex > 0;
+
+                // OPCIÓN 1: Filtro por TIPO (servidor)
+                if (tieneFiltroDeTipo && !tieneFiltroDeNombre && !tieneFiltroDeTemporada)
+                {
+                    string tipoSeleccionado = cmbTipoCultivo.SelectedItem.ToString();
+                    _productosFiltrados = await _apiService.BuscarPorTipoAsync(tipoSeleccionado);
+                }
+                // OPCIÓN 2: Filtro por NOMBRE (servidor)
+                else if (!tieneFiltroDeTipo && tieneFiltroDeNombre && !tieneFiltroDeTemporada)
+                {
+                    string nombreFiltro = txtNombre.Text.Trim();
+                    _productosFiltrados = await _apiService.BuscarPorNombreAsync(nombreFiltro);
+                }
+                // OPCIÓN 3: Filtro por TEMPORADA (servidor)
+                else if (!tieneFiltroDeTipo && !tieneFiltroDeNombre && tieneFiltroDeTemporada)
+                {
+                    string temporadaSeleccionada = cmbTemporada.SelectedItem.ToString();
+                    _productosFiltrados = await _apiService.BuscarPorTemporadaAsync(temporadaSeleccionada);
+                }
+                // OPCIÓN 4: Múltiples filtros - primero filtra en servidor, luego complementa en cliente
+                else if (tieneFiltroDeTipo || tieneFiltroDeNombre || tieneFiltroDeTemporada)
+                {
+                    // Paso 1: Obtener datos del servidor con el filtro principal
+                    List<ProductoAgricola> resultadosServidor;
+
+                    if (tieneFiltroDeTipo)
+                    {
+                        string tipoSeleccionado = cmbTipoCultivo.SelectedItem.ToString();
+                        resultadosServidor = await _apiService.BuscarPorTipoAsync(tipoSeleccionado);
+                    }
+                    else if (tieneFiltroDeNombre)
+                    {
+                        string nombreFiltro = txtNombre.Text.Trim();
+                        resultadosServidor = await _apiService.BuscarPorNombreAsync(nombreFiltro);
+                    }
+                    else // tieneFiltroDeTemporada
+                    {
+                        string temporadaSeleccionada = cmbTemporada.SelectedItem.ToString();
+                        resultadosServidor = await _apiService.BuscarPorTemporadaAsync(temporadaSeleccionada);
+                    }
+
+                    // Paso 2: Aplicar filtros adicionales en cliente (solo si hay múltiples filtros)
+                    _productosFiltrados = resultadosServidor;
+
+                    // Aplicar filtro adicional de nombre (si existe y no fue el principal)
+                    if (tieneFiltroDeNombre && !string.IsNullOrWhiteSpace(txtNombre.Text))
+                    {
+                        string nombreFiltro = txtNombre.Text.Trim().ToLower();
+                        if (!tieneFiltroDeTipo || tieneFiltroDeTemporada)
+                        {
+                            _productosFiltrados = _productosFiltrados
+                                .Where(p => p.Nombre.ToLower().Contains(nombreFiltro))
+                                .ToList();
+                        }
+                    }
+
+                    // Aplicar filtro adicional de tipo (si existe y no fue el principal)
+                    if (tieneFiltroDeTipo)
+                    {
+                        string tipoSeleccionado = cmbTipoCultivo.SelectedItem.ToString().ToLower();
+                        if (tieneFiltroDeNombre || tieneFiltroDeTemporada)
+                        {
+                            _productosFiltrados = _productosFiltrados
+                                .Where(p => p.TipoCultivo.ToLower().Contains(tipoSeleccionado))
+                                .ToList();
+                        }
+                    }
+
+                    // Aplicar filtro adicional de temporada (si existe y no fue el principal)
+                    if (tieneFiltroDeTemporada)
+                    {
+                        string temporadaSeleccionada = cmbTemporada.SelectedItem.ToString().ToLower();
+                        if (tieneFiltroDeTipo || tieneFiltroDeNombre)
+                        {
+                            _productosFiltrados = _productosFiltrados
+                                .Where(p => !string.IsNullOrEmpty(p.Temporada) &&
+                                           p.Temporada.ToLower().Contains(temporadaSeleccionada))
+                                .ToList();
+                        }
+                    }
+                }
+                // OPCIÓN 5: Sin filtros - traer todos
+                else
+                {
+                    _productosFiltrados = await _apiService.ObtenerTodosAsync();
+                }
+
+                ActualizarDataGridView();
+                ActualizarContadorRegistros();
+
+                if (_productosFiltrados.Count == 0)
+                {
+                    MessageHelper.ShowInfo("No se encontraron productos con los criterios de búsqueda especificados.");
+                }
+            }
+            catch (Exception ex)
             {
-                string nombreFiltro = txtNombre.Text.Trim().ToLower();
-                _productosFiltrados = _productosFiltrados
-                    .Where(p => p.Nombre.ToLower().Contains(nombreFiltro))
-                    .ToList();
+                MessageHelper.ShowError($"Error al aplicar filtros:\n{ex.Message}");
             }
-
-            // Filtrar por temporada
-            if (cmbTemporada.SelectedIndex > 0)
+            finally
             {
-                string temporadaSeleccionada = cmbTemporada.SelectedItem.ToString().ToLower();
-                _productosFiltrados = _productosFiltrados
-                    .Where(p => !string.IsNullOrEmpty(p.Temporada) &&
-                               p.Temporada.ToLower().Contains(temporadaSeleccionada))
-                    .ToList();
+                this.Cursor = Cursors.Default;
+                btnFiltrar.Enabled = true;
             }
-
-            ActualizarDataGridView();
-            ActualizarContadorRegistros();
         }
 
         // Eventos
-        private void btnFiltrar_Click(object sender, EventArgs e)
+        private async void btnFiltrar_Click(object sender, EventArgs e)
         {
-            AplicarFiltros();
+            await AplicarFiltros();
         }
 
-        private void btnLimpiar_Click(object sender, EventArgs e)
+        private async void btnLimpiar_Click(object sender, EventArgs e)
         {
             cmbTipoCultivo.SelectedIndex = 0;
             txtNombre.Clear();
             cmbTemporada.SelectedIndex = 0;
 
-            _productosFiltrados = new List<ProductoAgricola>(_todosLosProductos);
-            ActualizarDataGridView();
-            ActualizarContadorRegistros();
+            await CargarProductos();
         }
 
         private async void btnActualizar_Click(object sender, EventArgs e)
