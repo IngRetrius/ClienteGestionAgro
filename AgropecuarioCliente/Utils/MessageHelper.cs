@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 namespace AgropecuarioCliente.Utils
 {
@@ -12,6 +13,22 @@ namespace AgropecuarioCliente.Utils
         public static void ShowError(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        // Overload to show exception details with optional prefix message
+        public static void ShowError(System.Exception ex, string prefixMessage = null)
+        {
+            if (ex == null)
+            {
+                ShowError(prefixMessage ?? "Ocurrió un error desconocido.");
+                return;
+            }
+
+            var fullMessage = string.IsNullOrWhiteSpace(prefixMessage)
+                ? ex.Message
+                : prefixMessage + "\n\n" + ex.Message;
+
+            MessageBox.Show(fullMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public static void ShowWarning(string message)

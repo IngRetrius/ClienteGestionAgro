@@ -16,3 +16,4 @@ C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.exe.config
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.Forms.FormBuscarProducto.resources
 C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.Forms.FormCrearProducto.resources
+C:\Users\USUARIO1\source\repos\AgropecuarioCliente\AgropecuarioCliente\obj\Debug\AgropecuarioCliente.Forms.FormCrearCosecha.resources

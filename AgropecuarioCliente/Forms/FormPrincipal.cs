@@ -232,7 +232,26 @@ namespace AgropecuarioCliente.Forms
             await System.Threading.Tasks.Task.Delay(1000);
             VerificarConexionAPI();
         }
+        // ===== MÉTODOS PARA COSECHAS =====
 
+        private void listarCosechasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Implementar según necesites
+            MessageHelper.ShowInfo("Función en desarrollo");
+        }
+
+        private void verPorProductoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formCosechas = new FormCosechasDeProducto();
+                formCosechas.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir cosechas por producto:\n{ex.Message}");
+            }
+        }
         private void FormPrincipal_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control)

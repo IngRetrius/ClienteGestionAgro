@@ -49,6 +49,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FormCrearCosecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCrearCosecha.Designer.cs">
+      <DependentUpon>FormCrearCosecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSelectorCosecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSelectorCosecha.Designer.cs">
+      <DependentUpon>FormSelectorCosecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormBuscarCosecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormBuscarCosecha.Designer.cs">
+      <DependentUpon>FormBuscarCosecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormEliminarCosecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEliminarCosecha.Designer.cs">
+      <DependentUpon>FormEliminarCosecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormActualizarCosecha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormActualizarCosecha.Designer.cs">
+      <DependentUpon>FormActualizarCosecha.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormListarCosechas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormListarCosechas.Designer.cs">
+      <DependentUpon>FormListarCosechas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormCosechasDeProducto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCosechasDeProducto.Designer.cs">
+      <DependentUpon>FormCosechasDeProducto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormSelectorProducto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,6 +146,7 @@
       <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\Cosecha.cs" />
     <Compile Include="Models\ProductoAgricola.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +157,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormBuscarProducto.resx">
       <DependentUpon>FormBuscarProducto.cs</DependentUpon>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>FormBuscarProducto1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormCrearCosecha.resx">
+      <DependentUpon>FormCrearCosecha.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCrearProducto.resx">
       <DependentUpon>FormCrearProducto.cs</DependentUpon>

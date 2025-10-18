@@ -211,7 +211,132 @@ namespace AgropecuarioCliente.Services
                 throw new Exception($"Error al buscar por rango de hectáreas: {ex.Message}");
             }
         }
+        // ===== MÉTODOS PARA COSECHAS =====
 
+        public async Task<List<Cosecha>> ObtenerTodasCosechasAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("http://localhost:8081/api/cosechas");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Cosecha>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<Cosecha>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener cosechas: {ex.Message}");
+            }
+        }
+
+        public async Task<List<Cosecha>> ObtenerCosechasPorProductoAsync(string productoId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://localhost:8081/api/cosechas/producto/{productoId}");
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<List<Cosecha>>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data ?? new List<Cosecha>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener cosechas del producto: {ex.Message}");
+            }
+        }
+
+        public async Task<Cosecha> ObtenerCosechaPorIdAsync(string id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"http://localhost:8081/api/cosechas/{id}");
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<Cosecha>>(jsonContent, _jsonSettings);
+
+                return apiResponse?.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener cosecha por ID: {ex.Message}");
+            }
+        }
+
+        public async Task<Cosecha> CrearCosechaAsync(Cosecha cosecha)
+        {
+            try
+            {
+                var jsonContent = JsonConvert.SerializeObject(cosecha, _jsonSettings);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync("http://localhost:8081/api/cosechas", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error del servidor: {response.StatusCode} - {errorContent}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<Cosecha>>(responseContent, _jsonSettings);
+
+                return apiResponse?.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al crear cosecha: {ex.Message}");
+            }
+        }
+
+        public async Task<Cosecha> ActualizarCosechaAsync(string id, Cosecha cosecha)
+        {
+            try
+            {
+                cosecha.Id = id;
+
+                var jsonContent = JsonConvert.SerializeObject(cosecha, _jsonSettings);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PutAsync($"http://localhost:8081/api/cosechas/{id}", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error del servidor: {response.StatusCode} - {errorContent}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var apiResponse = JsonConvert.DeserializeObject<ApiResponse<Cosecha>>(responseContent, _jsonSettings);
+
+                return apiResponse?.Data;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al actualizar cosecha: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> EliminarCosechaAsync(string id)
+        {
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"http://localhost:8081/api/cosechas/{id}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al eliminar cosecha: {ex.Message}");
+            }
+        }
         public void Dispose()
         {
             _httpClient?.Dispose();
