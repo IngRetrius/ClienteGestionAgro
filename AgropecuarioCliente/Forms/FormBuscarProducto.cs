@@ -22,66 +22,9 @@ namespace AgropecuarioCliente.Forms
 
         private void FormBuscarProducto_Load(object sender, EventArgs e)
         {
-            ConfigurarDataGridView();
             CargarComboBoxes();
             ConfigurarControlesBusqueda();
-        }
-
-        private void ConfigurarDataGridView()
-        {
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.Columns.Clear();
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Id",
-                HeaderText = "ID",
-                DataPropertyName = "Id",
-                Width = 80
-            });
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Nombre",
-                HeaderText = "Nombre",
-                DataPropertyName = "Nombre",
-                Width = 200
-            });
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "TipoCultivo",
-                HeaderText = "Tipo de Cultivo",
-                DataPropertyName = "TipoCultivo",
-                Width = 150
-            });
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "HectareasCultivadas",
-                HeaderText = "Hectáreas",
-                DataPropertyName = "HectareasCultivadas",
-                Width = 100,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" }
-            });
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "CantidadProducida",
-                HeaderText = "Cantidad",
-                DataPropertyName = "CantidadProducida",
-                Width = 100,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" }
-            });
-
-            dataGridView1.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "PrecioVenta",
-                HeaderText = "Precio",
-                DataPropertyName = "PrecioVenta",
-                Width = 100,
-                DefaultCellStyle = new DataGridViewCellStyle { Format = "C0" }
-            });
+            LimpiarCamposResultado();
         }
 
         private void CargarComboBoxes()
@@ -257,16 +200,56 @@ namespace AgropecuarioCliente.Forms
 
         private void ActualizarResultados()
         {
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = _resultados;
-            dataGridView1.Refresh();
-
-            lblResultados.Text = $"Registros encontrados: {_resultados.Count}";
-
             if (_resultados.Count == 0)
             {
+                LimpiarCamposResultado();
+                lblResultados.Text = "No se encontraron resultados.";
+                lblResultados.ForeColor = System.Drawing.Color.Red;
                 MessageHelper.ShowInfo("No se encontraron productos que coincidan con los criterios de búsqueda.");
+                return;
             }
+
+            // Mostrar el primer resultado en los campos
+            var producto = _resultados[0];
+
+            txtResultadoId.Text = producto.Id ?? "";
+            txtResultadoNombre.Text = producto.Nombre ?? "";
+            txtResultadoTipoCultivo.Text = producto.TipoCultivo ?? "";
+            txtResultadoHectareas.Text = producto.HectareasCultivadas.ToString("N2");
+            txtResultadoCantidad.Text = producto.CantidadProducida.ToString("N0");
+            txtResultadoPrecio.Text = producto.PrecioVenta.ToString("C0");
+            txtResultadoCosto.Text = producto.CostoProduccion.ToString("C0");
+            txtResultadoFecha.Text = producto.FechaProduccion.ToString("dd/MM/yyyy");
+            txtResultadoTemporada.Text = producto.Temporada ?? "";
+            txtResultadoTipoSuelo.Text = producto.TipoSuelo ?? "";
+            txtResultadoCodigoFinca.Text = producto.CodigoFinca ?? "";
+
+            if (_resultados.Count == 1)
+            {
+                lblResultados.Text = "Se encontró 1 producto.";
+                lblResultados.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                lblResultados.Text = $"Se encontraron {_resultados.Count} productos. Mostrando el primero.";
+                lblResultados.ForeColor = System.Drawing.Color.Blue;
+            }
+        }
+
+        private void LimpiarCamposResultado()
+        {
+            txtResultadoId.Clear();
+            txtResultadoNombre.Clear();
+            txtResultadoTipoCultivo.Clear();
+            txtResultadoHectareas.Clear();
+            txtResultadoCantidad.Clear();
+            txtResultadoPrecio.Clear();
+            txtResultadoCosto.Clear();
+            txtResultadoFecha.Clear();
+            txtResultadoTemporada.Clear();
+            txtResultadoTipoSuelo.Clear();
+            txtResultadoCodigoFinca.Clear();
+            lblResultados.Text = "";
         }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
@@ -278,8 +261,7 @@ namespace AgropecuarioCliente.Forms
             numHectareasMax.Value = 100;
 
             _resultados.Clear();
-            dataGridView1.DataSource = null;
-            lblResultados.Text = "Registros encontrados: 0";
+            LimpiarCamposResultado();
 
             rbPorId.Checked = true;
             RadioButton_CheckedChanged(rbPorId, EventArgs.Empty);

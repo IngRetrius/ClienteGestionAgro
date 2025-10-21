@@ -31,14 +31,11 @@
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.groupBoxResultados = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblResultados = new System.Windows.Forms.Label();
             this.btnCerrar = new System.Windows.Forms.Button();
             this.groupBoxBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numHectareasMin)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numHectareasMax)).BeginInit();
             this.groupBoxResultados.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -227,42 +224,192 @@
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // groupBoxResultados
-            // 
-            this.groupBoxResultados.Controls.Add(this.lblResultados);
-            this.groupBoxResultados.Controls.Add(this.dataGridView1);
+            //
             this.groupBoxResultados.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.groupBoxResultados.Location = new System.Drawing.Point(30, 270);
             this.groupBoxResultados.Name = "groupBoxResultados";
-            this.groupBoxResultados.Size = new System.Drawing.Size(840, 300);
+            this.groupBoxResultados.Size = new System.Drawing.Size(840, 350);
             this.groupBoxResultados.TabIndex = 2;
             this.groupBoxResultados.TabStop = false;
-            this.groupBoxResultados.Text = "Resultados de la Búsqueda";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(20, 30);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(800, 230);
-            this.dataGridView1.TabIndex = 0;
-            // 
+            this.groupBoxResultados.Text = "Resultado de la Búsqueda";
+            //
+            // Crear paneles para organizar campos
+            var lblId = new System.Windows.Forms.Label();
+            lblId.AutoSize = true;
+            lblId.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblId.Location = new System.Drawing.Point(20, 30);
+            lblId.Text = "ID:";
+            this.groupBoxResultados.Controls.Add(lblId);
+
+            this.txtResultadoId = new System.Windows.Forms.TextBox();
+            this.txtResultadoId.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoId.Location = new System.Drawing.Point(180, 28);
+            this.txtResultadoId.Name = "txtResultadoId";
+            this.txtResultadoId.ReadOnly = true;
+            this.txtResultadoId.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoId);
+
+            var lblNombre = new System.Windows.Forms.Label();
+            lblNombre.AutoSize = true;
+            lblNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblNombre.Location = new System.Drawing.Point(20, 65);
+            lblNombre.Text = "Nombre:";
+            this.groupBoxResultados.Controls.Add(lblNombre);
+
+            this.txtResultadoNombre = new System.Windows.Forms.TextBox();
+            this.txtResultadoNombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoNombre.Location = new System.Drawing.Point(180, 63);
+            this.txtResultadoNombre.Name = "txtResultadoNombre";
+            this.txtResultadoNombre.ReadOnly = true;
+            this.txtResultadoNombre.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoNombre);
+
+            var lblTipoCultivo = new System.Windows.Forms.Label();
+            lblTipoCultivo.AutoSize = true;
+            lblTipoCultivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblTipoCultivo.Location = new System.Drawing.Point(20, 100);
+            lblTipoCultivo.Text = "Tipo de Cultivo:";
+            this.groupBoxResultados.Controls.Add(lblTipoCultivo);
+
+            this.txtResultadoTipoCultivo = new System.Windows.Forms.TextBox();
+            this.txtResultadoTipoCultivo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoTipoCultivo.Location = new System.Drawing.Point(180, 98);
+            this.txtResultadoTipoCultivo.Name = "txtResultadoTipoCultivo";
+            this.txtResultadoTipoCultivo.ReadOnly = true;
+            this.txtResultadoTipoCultivo.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoTipoCultivo);
+
+            var lblHectareas = new System.Windows.Forms.Label();
+            lblHectareas.AutoSize = true;
+            lblHectareas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblHectareas.Location = new System.Drawing.Point(20, 135);
+            lblHectareas.Text = "Hectáreas Cultivadas:";
+            this.groupBoxResultados.Controls.Add(lblHectareas);
+
+            this.txtResultadoHectareas = new System.Windows.Forms.TextBox();
+            this.txtResultadoHectareas.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoHectareas.Location = new System.Drawing.Point(180, 133);
+            this.txtResultadoHectareas.Name = "txtResultadoHectareas";
+            this.txtResultadoHectareas.ReadOnly = true;
+            this.txtResultadoHectareas.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoHectareas);
+
+            var lblCantidad = new System.Windows.Forms.Label();
+            lblCantidad.AutoSize = true;
+            lblCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblCantidad.Location = new System.Drawing.Point(20, 170);
+            lblCantidad.Text = "Cantidad Producida:";
+            this.groupBoxResultados.Controls.Add(lblCantidad);
+
+            this.txtResultadoCantidad = new System.Windows.Forms.TextBox();
+            this.txtResultadoCantidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoCantidad.Location = new System.Drawing.Point(180, 168);
+            this.txtResultadoCantidad.Name = "txtResultadoCantidad";
+            this.txtResultadoCantidad.ReadOnly = true;
+            this.txtResultadoCantidad.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoCantidad);
+
+            var lblPrecio = new System.Windows.Forms.Label();
+            lblPrecio.AutoSize = true;
+            lblPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblPrecio.Location = new System.Drawing.Point(460, 30);
+            lblPrecio.Text = "Precio de Venta:";
+            this.groupBoxResultados.Controls.Add(lblPrecio);
+
+            this.txtResultadoPrecio = new System.Windows.Forms.TextBox();
+            this.txtResultadoPrecio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoPrecio.Location = new System.Drawing.Point(600, 28);
+            this.txtResultadoPrecio.Name = "txtResultadoPrecio";
+            this.txtResultadoPrecio.ReadOnly = true;
+            this.txtResultadoPrecio.Size = new System.Drawing.Size(200, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoPrecio);
+
+            var lblCosto = new System.Windows.Forms.Label();
+            lblCosto.AutoSize = true;
+            lblCosto.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblCosto.Location = new System.Drawing.Point(460, 65);
+            lblCosto.Text = "Costo de Producción:";
+            this.groupBoxResultados.Controls.Add(lblCosto);
+
+            this.txtResultadoCosto = new System.Windows.Forms.TextBox();
+            this.txtResultadoCosto.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoCosto.Location = new System.Drawing.Point(600, 63);
+            this.txtResultadoCosto.Name = "txtResultadoCosto";
+            this.txtResultadoCosto.ReadOnly = true;
+            this.txtResultadoCosto.Size = new System.Drawing.Size(200, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoCosto);
+
+            var lblFecha = new System.Windows.Forms.Label();
+            lblFecha.AutoSize = true;
+            lblFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblFecha.Location = new System.Drawing.Point(460, 100);
+            lblFecha.Text = "Fecha de Producción:";
+            this.groupBoxResultados.Controls.Add(lblFecha);
+
+            this.txtResultadoFecha = new System.Windows.Forms.TextBox();
+            this.txtResultadoFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoFecha.Location = new System.Drawing.Point(600, 98);
+            this.txtResultadoFecha.Name = "txtResultadoFecha";
+            this.txtResultadoFecha.ReadOnly = true;
+            this.txtResultadoFecha.Size = new System.Drawing.Size(200, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoFecha);
+
+            var lblTemporada = new System.Windows.Forms.Label();
+            lblTemporada.AutoSize = true;
+            lblTemporada.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblTemporada.Location = new System.Drawing.Point(460, 135);
+            lblTemporada.Text = "Temporada:";
+            this.groupBoxResultados.Controls.Add(lblTemporada);
+
+            this.txtResultadoTemporada = new System.Windows.Forms.TextBox();
+            this.txtResultadoTemporada.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoTemporada.Location = new System.Drawing.Point(600, 133);
+            this.txtResultadoTemporada.Name = "txtResultadoTemporada";
+            this.txtResultadoTemporada.ReadOnly = true;
+            this.txtResultadoTemporada.Size = new System.Drawing.Size(200, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoTemporada);
+
+            var lblTipoSuelo = new System.Windows.Forms.Label();
+            lblTipoSuelo.AutoSize = true;
+            lblTipoSuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblTipoSuelo.Location = new System.Drawing.Point(460, 170);
+            lblTipoSuelo.Text = "Tipo de Suelo:";
+            this.groupBoxResultados.Controls.Add(lblTipoSuelo);
+
+            this.txtResultadoTipoSuelo = new System.Windows.Forms.TextBox();
+            this.txtResultadoTipoSuelo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoTipoSuelo.Location = new System.Drawing.Point(600, 168);
+            this.txtResultadoTipoSuelo.Name = "txtResultadoTipoSuelo";
+            this.txtResultadoTipoSuelo.ReadOnly = true;
+            this.txtResultadoTipoSuelo.Size = new System.Drawing.Size(200, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoTipoSuelo);
+
+            var lblCodigoFinca = new System.Windows.Forms.Label();
+            lblCodigoFinca.AutoSize = true;
+            lblCodigoFinca.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            lblCodigoFinca.Location = new System.Drawing.Point(20, 205);
+            lblCodigoFinca.Text = "Código de Finca:";
+            this.groupBoxResultados.Controls.Add(lblCodigoFinca);
+
+            this.txtResultadoCodigoFinca = new System.Windows.Forms.TextBox();
+            this.txtResultadoCodigoFinca.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.txtResultadoCodigoFinca.Location = new System.Drawing.Point(180, 203);
+            this.txtResultadoCodigoFinca.Name = "txtResultadoCodigoFinca";
+            this.txtResultadoCodigoFinca.ReadOnly = true;
+            this.txtResultadoCodigoFinca.Size = new System.Drawing.Size(250, 24);
+            this.groupBoxResultados.Controls.Add(this.txtResultadoCodigoFinca);
+
             // lblResultados
-            // 
+            //
+            this.lblResultados = new System.Windows.Forms.Label();
             this.lblResultados.AutoSize = true;
-            this.lblResultados.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.lblResultados.Location = new System.Drawing.Point(20, 270);
+            this.lblResultados.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            this.lblResultados.Location = new System.Drawing.Point(20, 250);
             this.lblResultados.Name = "lblResultados";
-            this.lblResultados.Size = new System.Drawing.Size(150, 18);
+            this.lblResultados.Size = new System.Drawing.Size(200, 18);
             this.lblResultados.TabIndex = 1;
-            this.lblResultados.Text = "Registros encontrados: 0";
+            this.lblResultados.Text = "";
+            this.groupBoxResultados.Controls.Add(this.lblResultados);
             // 
             // btnCerrar
             // 
@@ -275,13 +422,13 @@
             this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = false;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
-            // 
+            //
             // FormBuscarProducto
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(900, 650);
+            this.ClientSize = new System.Drawing.Size(900, 670);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBoxResultados);
             this.Controls.Add(this.groupBoxBusqueda);
@@ -299,7 +446,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numHectareasMax)).EndInit();
             this.groupBoxResultados.ResumeLayout(false);
             this.groupBoxResultados.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -320,8 +466,20 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.GroupBox groupBoxResultados;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblResultados;
         private System.Windows.Forms.Button btnCerrar;
+
+        // Campos de resultado
+        private System.Windows.Forms.TextBox txtResultadoId;
+        private System.Windows.Forms.TextBox txtResultadoNombre;
+        private System.Windows.Forms.TextBox txtResultadoTipoCultivo;
+        private System.Windows.Forms.TextBox txtResultadoHectareas;
+        private System.Windows.Forms.TextBox txtResultadoCantidad;
+        private System.Windows.Forms.TextBox txtResultadoPrecio;
+        private System.Windows.Forms.TextBox txtResultadoCosto;
+        private System.Windows.Forms.TextBox txtResultadoFecha;
+        private System.Windows.Forms.TextBox txtResultadoTemporada;
+        private System.Windows.Forms.TextBox txtResultadoTipoSuelo;
+        private System.Windows.Forms.TextBox txtResultadoCodigoFinca;
     }
 }

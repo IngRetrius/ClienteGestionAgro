@@ -166,6 +166,9 @@
     <EmbeddedResource Include="Forms\FormCrearProducto.resx">
       <DependentUpon>FormCrearProducto.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormEliminarCosecha.resx">
+      <DependentUpon>FormEliminarCosecha.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormListarProductos.resx">
       <DependentUpon>FormListarProductos.cs</DependentUpon>
     </EmbeddedResource>

@@ -70,7 +70,7 @@
             this.groupBoxMaestro.Size = new System.Drawing.Size(840, 140);
             this.groupBoxMaestro.TabIndex = 1;
             this.groupBoxMaestro.TabStop = false;
-            this.groupBoxMaestro.Text = "📦 PRODUCTO SELECCIONADO (MAESTRO)";
+            this.groupBoxMaestro.Text = "PRODUCTO SELECCIONADO (MAESTRO)";
             // 
             // btnSeleccionarProducto
             // 
@@ -81,7 +81,7 @@
             this.btnSeleccionarProducto.Name = "btnSeleccionarProducto";
             this.btnSeleccionarProducto.Size = new System.Drawing.Size(190, 80);
             this.btnSeleccionarProducto.TabIndex = 0;
-            this.btnSeleccionarProducto.Text = "🔍 Seleccionar\r\nProducto";
+            this.btnSeleccionarProducto.Text = "Seleccionar\r\nProducto";
             this.btnSeleccionarProducto.UseVisualStyleBackColor = false;
             this.btnSeleccionarProducto.Click += new System.EventHandler(this.btnSeleccionarProducto_Click);
             // 
@@ -186,7 +186,7 @@
             this.groupBoxDetalle.Size = new System.Drawing.Size(840, 340);
             this.groupBoxDetalle.TabIndex = 2;
             this.groupBoxDetalle.TabStop = false;
-            this.groupBoxDetalle.Text = "📋 COSECHAS DEL PRODUCTO (DETALLE)";
+            this.groupBoxDetalle.Text = "COSECHAS DEL PRODUCTO (DETALLE)";
             // 
             // dataGridViewCosechas
             // 
@@ -247,7 +247,7 @@
             this.btnAgregarCosecha.Name = "btnAgregarCosecha";
             this.btnAgregarCosecha.Size = new System.Drawing.Size(150, 45);
             this.btnAgregarCosecha.TabIndex = 3;
-            this.btnAgregarCosecha.Text = "➕ Agregar\r\nNueva Cosecha";
+            this.btnAgregarCosecha.Text = "Agregar\r\nNueva Cosecha";
             this.btnAgregarCosecha.UseVisualStyleBackColor = false;
             this.btnAgregarCosecha.Click += new System.EventHandler(this.btnAgregarCosecha_Click);
             // 
@@ -260,7 +260,7 @@
             this.btnVerDetalles.Name = "btnVerDetalles";
             this.btnVerDetalles.Size = new System.Drawing.Size(150, 45);
             this.btnVerDetalles.TabIndex = 4;
-            this.btnVerDetalles.Text = "👁 Ver Detalles";
+            this.btnVerDetalles.Text = "Ver Detalles";
             this.btnVerDetalles.UseVisualStyleBackColor = false;
             this.btnVerDetalles.Click += new System.EventHandler(this.btnVerDetalles_Click);
             // 
@@ -273,7 +273,7 @@
             this.btnEliminarCosecha.Name = "btnEliminarCosecha";
             this.btnEliminarCosecha.Size = new System.Drawing.Size(150, 45);
             this.btnEliminarCosecha.TabIndex = 5;
-            this.btnEliminarCosecha.Text = "🗑 Eliminar\r\nCosecha";
+            this.btnEliminarCosecha.Text = "Eliminar\r\nCosecha";
             this.btnEliminarCosecha.UseVisualStyleBackColor = false;
             this.btnEliminarCosecha.Click += new System.EventHandler(this.btnEliminarCosecha_Click);
             // 
@@ -285,7 +285,7 @@
             this.btnRefrescar.Name = "btnRefrescar";
             this.btnRefrescar.Size = new System.Drawing.Size(120, 45);
             this.btnRefrescar.TabIndex = 6;
-            this.btnRefrescar.Text = "🔄 Refrescar";
+            this.btnRefrescar.Text = "Refrescar";
             this.btnRefrescar.UseVisualStyleBackColor = false;
             this.btnRefrescar.Click += new System.EventHandler(this.btnRefrescar_Click);
             // 
@@ -297,7 +297,7 @@
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(120, 45);
             this.btnCerrar.TabIndex = 7;
-            this.btnCerrar.Text = "❌ Cerrar";
+            this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = false;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             // 

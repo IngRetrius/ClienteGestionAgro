@@ -236,8 +236,76 @@ namespace AgropecuarioCliente.Forms
 
         private void listarCosechasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Implementar según necesites
-            MessageHelper.ShowInfo("Función en desarrollo");
+            try
+            {
+                var formListar = new FormListarCosechas();
+                formListar.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de listado de cosechas:\n{ex.Message}");
+            }
+        }
+
+        private void crearCosechaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formCrear = new FormCrearCosecha();
+                if (formCrear.ShowDialog() == DialogResult.OK)
+                {
+                    MessageHelper.ShowSuccess("Cosecha creada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de creación:\n{ex.Message}");
+            }
+        }
+
+        private void editarCosechaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formEditar = new FormActualizarCosecha();
+                if (formEditar.ShowDialog() == DialogResult.OK)
+                {
+                    MessageHelper.ShowSuccess("Cosecha actualizada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de edición:\n{ex.Message}");
+            }
+        }
+
+        private void buscarCosechaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formBuscar = new FormBuscarCosecha();
+                formBuscar.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de búsqueda:\n{ex.Message}");
+            }
+        }
+
+        private void eliminarCosechaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var formEliminar = new FormEliminarCosecha();
+                if (formEliminar.ShowDialog() == DialogResult.OK)
+                {
+                    MessageHelper.ShowSuccess("Cosecha eliminada exitosamente.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.ShowError($"Error al abrir el formulario de eliminación:\n{ex.Message}");
+            }
         }
 
         private void verPorProductoToolStripMenuItem_Click(object sender, EventArgs e)

@@ -188,25 +188,33 @@
             this.listarCosechasToolStripMenuItem.Click += new System.EventHandler(this.listarCosechasToolStripMenuItem_Click);
             // 
             // crearCosechaToolStripMenuItem
-            // 
+            //
             this.crearCosechaToolStripMenuItem.Name = "crearCosechaToolStripMenuItem";
             this.crearCosechaToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            // 
+            this.crearCosechaToolStripMenuItem.Text = "Crear Cosecha";
+            this.crearCosechaToolStripMenuItem.Click += new System.EventHandler(this.crearCosechaToolStripMenuItem_Click);
+            //
             // editarCosechaToolStripMenuItem
-            // 
+            //
             this.editarCosechaToolStripMenuItem.Name = "editarCosechaToolStripMenuItem";
             this.editarCosechaToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.editarCosechaToolStripMenuItem.Text = "Editar Cosecha";
+            this.editarCosechaToolStripMenuItem.Click += new System.EventHandler(this.editarCosechaToolStripMenuItem_Click);
             // 
             // eliminarCosechaToolStripMenuItem
-            // 
+            //
             this.eliminarCosechaToolStripMenuItem.Name = "eliminarCosechaToolStripMenuItem";
             this.eliminarCosechaToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            // 
+            this.eliminarCosechaToolStripMenuItem.Text = "Eliminar Cosecha";
+            this.eliminarCosechaToolStripMenuItem.Click += new System.EventHandler(this.eliminarCosechaToolStripMenuItem_Click);
+            //
             // buscarCosechaToolStripMenuItem
-            // 
+            //
             this.buscarCosechaToolStripMenuItem.Name = "buscarCosechaToolStripMenuItem";
             this.buscarCosechaToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            // 
+            this.buscarCosechaToolStripMenuItem.Text = "Buscar Cosecha";
+            this.buscarCosechaToolStripMenuItem.Click += new System.EventHandler(this.buscarCosechaToolStripMenuItem_Click);
+            //
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";

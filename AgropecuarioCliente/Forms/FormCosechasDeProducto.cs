@@ -254,9 +254,9 @@ namespace AgropecuarioCliente.Forms
 
         private void MostrarDetallesCosecha(Cosecha cosecha)
         {
-            string detalles = $"═══════════════════════════════════════\n" +
+            string detalles = $"=======================================\n" +
                             $"DETALLES DE LA COSECHA\n" +
-                            $"═══════════════════════════════════════\n\n" +
+                            $"=======================================\n\n" +
                             $"ID: {cosecha.Id}\n" +
                             $"Producto ID: {cosecha.ProductoId}\n" +
                             $"Fecha: {cosecha.FechaCosecha:dd/MM/yyyy HH:mm}\n" +
@@ -264,11 +264,11 @@ namespace AgropecuarioCliente.Forms
                             $"Calidad: {cosecha.CalidadProducto}\n" +
                             $"Trabajadores: {cosecha.NumeroTrabajadores}\n" +
                             $"Costo Mano de Obra: ${cosecha.CostoManoObra:N2}\n" +
-                            $"Condiciones Climáticas: {cosecha.CondicionesClimaticas}\n" +
+                            $"Condiciones Climaticas: {cosecha.CondicionesClimaticas}\n" +
                             $"Estado: {cosecha.EstadoCosecha}\n\n" +
-                            $"─────────────────────────────────────\n" +
-                            $"CÁLCULOS\n" +
-                            $"─────────────────────────────────────\n" +
+                            $"---------------------------------------\n" +
+                            $"CALCULOS\n" +
+                            $"---------------------------------------\n" +
                             $"Costo por kg: ${cosecha.CalcularCostoPorKg():N2}\n" +
                             $"Costo por trabajador: ${cosecha.CalcularCostoPorTrabajador():N2}\n" +
                             $"Rendimiento: {cosecha.CalcularRendimiento():N2} kg/trabajador\n\n" +
